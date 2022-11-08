@@ -12,9 +12,4 @@
 
 namespace types
 {
-	struct Vertex
-	{
-		Vec<double, 3u> position;
-		Color color;
-	};
 }

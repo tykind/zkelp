@@ -10,6 +10,9 @@
 #include <memory>
 #include <cstdint>
 
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+
 #define SCHEDULER_TYPEID const std::type_info &type = typeid(*this)
 namespace zkelp 
 {
@@ -41,9 +44,11 @@ namespace zkelp
 	{
 		std::vector<scheduler_types::BaseTask*> tasks;
 		std::optional<std::jthread> singleton;
-		std::uint32_t run_timer{ 50u };
+		GLFWwindow* renderingWindow{ nullptr };
+
+		std::uint32_t run_timer{ 0u };
 	public:
-		
+
 		void change_tick(const std::uint32_t& new_timer)
 		{
 			run_timer = new_timer;
@@ -53,10 +58,19 @@ namespace zkelp
 			tasks.push_back(task);
 		};
 
+		auto getRenderingWindow()
+		{
+			return renderingWindow;
+		}
+
 		bool run() {
 			if (!singleton.has_value()) {
 				// Make and set a singleton-running thread
+				glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 				singleton = std::make_optional(std::jthread([&] {
+
+					renderingWindow = glfwCreateWindow(800, 600, utils::applicationName, nullptr, nullptr);
+
 					while (true) {
 						std::this_thread::sleep_for(std::chrono::milliseconds(run_timer)); // Prevent a crash
 

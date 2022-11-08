@@ -4,6 +4,7 @@
 */
 #pragma once
 #include "../../../../types/common.hpp"
+#include "../../../../../3rd party/glm/glm.hpp"
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -22,6 +23,41 @@ namespace types
 		VkFormat format;
 		VkExtent2D extent;
 
-		types::Vec<VkImage> images;
+		std::vector<VkImage> images;
+	};
+
+	struct graphicsPipelineInformation
+	{
+		VkPipeline pipeline;
+		VkPipelineLayout layout;
+		VkDescriptorSetLayout descriptor;
+		VkVertexInputBindingDescription vertexBindingDescription;
+		std::vector<VkVertexInputAttributeDescription> vertexAttributeDescriptions;
+	};
+
+	struct VertexBuffer
+	{
+		VkBuffer buffer;
+		VkDeviceMemory memory;
+
+		VkBuffer index;
+		VkDeviceMemory indexMemory;
+	};
+
+	struct UniformBuffer
+	{
+		VkBuffer buffer;
+		VkDeviceMemory memory;
+		
+		struct
+		{
+			Matrix<double> transformationMatrix;
+		} uniformData;
+	};
+
+	struct Vertex
+	{
+		float pos[3];
+		float color[3];
 	};
 }

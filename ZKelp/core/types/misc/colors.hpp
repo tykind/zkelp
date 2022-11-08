@@ -10,7 +10,7 @@ namespace types
 {
 	struct Color
 	{
-		Vec<float_t, 3> value;
+		Vec<float_t> value;
 
 		void fromRgb(float_t r, float_t g, float_t b)
 		{

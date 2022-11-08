@@ -19,5 +19,7 @@ namespace utils {
 
 	constexpr auto useVulkan{ true };
 	constexpr auto vulkanDbg{ true };
-	const char* vulkanDebugLayerName = "VK_LAYER_LUNARG_standard_validation";
+	std::vector<const char*> vulkanDebugLayerName = {
+		"VK_LAYER_KHRONOS_validation"
+	};
 }

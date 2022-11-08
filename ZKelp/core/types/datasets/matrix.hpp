@@ -6,13 +6,13 @@
 
 namespace types
 {
-	template<typename _Ty, auto _Size = 0u> struct Matrix final : public Dataset<Vec<_Ty, _Size>>
+	template<typename _Ty> struct Matrix final : public Dataset<Vec<_Ty>>
 	{
-		using Dataset<Vec<_Ty, _Size>>::Dataset;
+		using Dataset<Vec<_Ty>>::Dataset;
 
-		PRODUCT_OPERATOR(Matrix<_Ty, _Size>, Matrix<_Ty, _Size>& m2)
+		PRODUCT_OPERATOR(Matrix<_Ty>, Matrix<_Ty>& m2)
 		{
-			Matrix<_Ty, _Size> ret;
+			Matrix<_Ty> ret;
 			ret.reserve(m2.size());
 
 			for (auto i = 0u; i < this->size(); i++)
@@ -25,6 +25,5 @@ namespace types
 		}
 	};
 
-	template<auto _Size = 0u>
-	using Md = Matrix<double, _Size>;
+	using Md = Matrix<double>;
 }

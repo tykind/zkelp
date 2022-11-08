@@ -2,6 +2,8 @@
 *	Desc: ZKelp Engine
 *	Note: Finish on rendering engine / Using Vulkan / Handle windows resize montitor event
 * 
+*	TODO: Finish functions to prepare texture image
+* 
 *	Author: Tykind
 */
 
@@ -22,10 +24,10 @@ int main() {
 		const auto renderingTask = zkelp::initRenderer();
 
 		//std::atexit(gnr::cify([renderingTask]() { renderingTask->cleanScene(); }));
+
+		zkelp::dynamic_scheduler.run();
 	} catch (err::err& err) {
 		logger.log(err.what().c_str());
 		std::terminate();
 	}
-
-	zkelp::dynamic_scheduler.run();
 }

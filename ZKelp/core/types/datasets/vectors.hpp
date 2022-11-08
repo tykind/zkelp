@@ -7,21 +7,21 @@
 namespace types
 {
 
-	template<typename _Ty, auto _Size = 0u> struct Vec final : public Dataset<_Ty, _Size>
+	template<typename _Ty> struct Vec final : public Dataset<_Ty>
 	{
-		using Dataset<_Ty, _Size>::Dataset;
+		using Dataset<_Ty>::Dataset;
 
-		ADD_OPERATOR(Vec<_Ty, _Size>, Vec<_Ty, _Size>& v2) {
-			vec<_Ty, _Size> ret(v2.begin(), v2.end());
+		ADD_OPERATOR(Vec<_Ty>, Vec<_Ty>& v2) {
+			Vec<_Ty> ret(v2.begin(), v2.end());
 
 			for (auto i = 0u; i < v2.size(); i++)
 				ret[i] += this->operator[](i);
 			return ret;
 		}
 
-		PRODUCT_OPERATOR(Vec<_Ty, _Size>, Vec<_Ty, _Size>& v2)
+		PRODUCT_OPERATOR(Vec<_Ty>, Vec<_Ty>& v2)
 		{
-			Vec<_Ty, _Size> ret;
+			Vec<_Ty> ret;
 			ret.reserve(v2.size());
 
 			for (auto i = 0u; i < this->size(); i++)
@@ -30,6 +30,5 @@ namespace types
 		}
 	};
 
-	template<auto _Size = 0u>
-	using Vd = Vec<double, _Size>;
+	using Vd = Vec<double>;
 }
