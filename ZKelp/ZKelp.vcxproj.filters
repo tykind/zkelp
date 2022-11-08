@@ -836,34 +836,34 @@
     <ClInclude Include="3rd party\glm\gtx\wrap.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\common.h">
+    <ClInclude Include="3rd party\glm\simd\common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\exponential.h">
+    <ClInclude Include="3rd party\glm\simd\exponential.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\geometric.h">
+    <ClInclude Include="3rd party\glm\simd\geometric.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\integer.h">
+    <ClInclude Include="3rd party\glm\simd\integer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\matrix.h">
+    <ClInclude Include="3rd party\glm\simd\matrix.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\neon.h">
+    <ClInclude Include="3rd party\glm\simd\neon.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\packing.h">
+    <ClInclude Include="3rd party\glm\simd\packing.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\platform.h">
+    <ClInclude Include="3rd party\glm\simd\platform.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\trigonometric.h">
+    <ClInclude Include="3rd party\glm\simd\trigonometric.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rd party\glm\simd\vector_relational.h">
+    <ClInclude Include="3rd party\glm\simd\vector_relational.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="3rd party\glm\common.hpp">
