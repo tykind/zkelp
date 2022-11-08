@@ -1,9 +1,9 @@
 /// @ref simd
-/// @file glm/simd/experimental.h
+/// @file glm/simd/experimental.hpp
 
 #pragma once
 
-#include "platform.h"
+#include "platform.hpp"
 
 #if GLM_ARCH & GLM_ARCH_SSE2_BIT
 

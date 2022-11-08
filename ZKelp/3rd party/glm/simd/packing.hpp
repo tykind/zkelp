@@ -1,5 +1,5 @@
 /// @ref simd
-/// @file glm/simd/vector_relational.h
+/// @file glm/simd/packing.hpp
 
 #pragma once
 

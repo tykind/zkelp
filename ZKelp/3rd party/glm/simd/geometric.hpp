@@ -1,9 +1,9 @@
 /// @ref simd
-/// @file glm/simd/geometric.h
+/// @file glm/simd/geometric.hpp
 
 #pragma once
 
-#include "common.h"
+#include "common.hpp"
 
 #if GLM_ARCH & GLM_ARCH_SSE2_BIT
 

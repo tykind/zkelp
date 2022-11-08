@@ -1,9 +1,8 @@
 /// @ref simd
-/// @file glm/simd/trigonometric.h
+/// @file glm/simd/vector_relational.hpp
 
 #pragma once
 
 #if GLM_ARCH & GLM_ARCH_SSE2_BIT
 
 #endif//GLM_ARCH & GLM_ARCH_SSE2_BIT
-
