@@ -39,7 +39,6 @@ namespace vulkan
 		VkRenderPass graphicsPass;
 		VkDescriptorPool descriptorPool;
 		VkDescriptorSet descriptorSet;
-		std::mutex mutex;
 
 		types::UniformBuffer* uniformBuffer;
 		types::SwapchainInformation* swapchainInfo;
@@ -52,6 +51,8 @@ namespace vulkan
 		std::vector<VkImageView> imageViews;
 		std::vector<VkFramebuffer> frameBuffers;
 
+		std::vector<types::Texture> textures;
+
 		std::tuple<VkDevice, VkPhysicalDeviceMemoryProperties> logicalDevices;
 		std::tuple<std::uint32_t, std::uint32_t> queueIndexes;
 		std::tuple<VkInstance, VkSurfaceKHR> instanceAndSurface;
@@ -62,7 +63,6 @@ namespace vulkan
 	public:
 		void setup(GLFWwindow* window)
 		{
-			std::lock_guard<std::mutex> lock(mutex);
 			// Setup first instances at vulkan
 
 			glfwSetWindowSizeCallback(window, VulkanEngine::onWindowResized);
@@ -103,7 +103,7 @@ namespace vulkan
 			vkDestroyPipeline(std::get<0>(logicalDevices), graphicsPipelineInfo->pipeline, nullptr);
 			vkDestroyRenderPass(std::get<0>(logicalDevices), renderPass, nullptr);
 
-			for (size_t i = 0; i < swapchainInfo->images.size(); i++) {
+			for (auto i = 0u; i < swapchainInfo->images.size(); i++) {
 				vkDestroyFramebuffer(std::get<0>(logicalDevices), frameBuffers[i], nullptr);
 				vkDestroyImageView(std::get<0>(logicalDevices), imageViews[i], nullptr);
 			}
@@ -111,24 +111,38 @@ namespace vulkan
 			vkDestroyDescriptorSetLayout(std::get<0>(logicalDevices), graphicsPipelineInfo->descriptor, nullptr);
 
 			if (fullclean) {
+
 				vkDestroySemaphore(std::get<0>(logicalDevices), std::get<0>(semaphores), nullptr);
 				vkDestroySemaphore(std::get<0>(logicalDevices), std::get<1>(semaphores), nullptr);
 
 				vkDestroyCommandPool(std::get<0>(logicalDevices), commandPool, nullptr);
 
 				// Clean up uniform buffer related objects
+
 				vkDestroyDescriptorPool(std::get<0>(logicalDevices), descriptorPool, nullptr);
 				vkDestroyBuffer(std::get<0>(logicalDevices), uniformBuffer->buffer, nullptr);
 				vkFreeMemory(std::get<0>(logicalDevices), uniformBuffer->memory, nullptr);
 
 				// Buffers must be destroyed after no command buffers are referring to them anymore
+
 				vkDestroyBuffer(std::get<0>(logicalDevices), std::get<0>(vertexBufferInfo)->buffer, nullptr);
 				vkFreeMemory(std::get<0>(logicalDevices), std::get<0>(vertexBufferInfo)->memory, nullptr);
 				vkDestroyBuffer(std::get<0>(logicalDevices), std::get<0>(vertexBufferInfo)->index, nullptr);
 				vkFreeMemory(std::get<0>(logicalDevices), std::get<0>(vertexBufferInfo)->indexMemory, nullptr);
 
 				// Note: implicitly destroys images (in fact, we're not allowed to do that explicitly)
+
 				vkDestroySwapchainKHR(std::get<0>(logicalDevices), swapchainInfo->swapchain, nullptr);
+
+				for (auto i = 0u; i < textures.size(); i++)
+				{
+					const auto& texture = textures[i];
+
+					vkDestroySampler(std::get<0>(logicalDevices), texture.sampler, nullptr);
+					vkDestroyImageView(std::get<0>(logicalDevices), texture.view, nullptr);
+					vkDestroyImage(std::get<0>(logicalDevices), texture.image, nullptr);
+					vkFreeMemory(std::get<0>(logicalDevices), texture.memory, nullptr);
+				}
 
 				vkDestroyDevice(std::get<0>(logicalDevices), nullptr);
 
@@ -220,5 +234,17 @@ namespace vulkan
 		static void onWindowResized(GLFWwindow* window, int width, int height) {
 			windowResized = true;
 		}
+
+		////// Utilities
+
+		// Make functions
+
+		void makeTexture(const std::string_view& path)
+		{
+			// Make texture from our existing images
+
+			textures.push_back(createTexture(std::get<0>(logicalDevices), physicalDevice, std::get<0>(queues), commandPool, path));
+		}
+
 	} vulkanEngine;
 }

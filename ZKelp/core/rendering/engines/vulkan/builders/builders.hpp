@@ -193,7 +193,6 @@ namespace vulkan
 		VkDeviceQueueCreateInfo queueCreateInfo[2] = {};
 		float queuePriority = 1.0f;
 
-
 		queueCreateInfo[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 		queueCreateInfo[0].queueFamilyIndex = std::get<0>(queueIndexes);
 		queueCreateInfo[0].queueCount = 1;
@@ -215,11 +214,14 @@ namespace vulkan
 		else
 			deviceCreateInfo.queueCreateInfoCount = 2;
 
-		// Some shader settings & extention setup
+		// Some device features we can toggle
+		// Note: This version is ugly, I'll like to go for a compile-time configurator to be applied during run-time
+
 
 		VkPhysicalDeviceFeatures enabledFeatures = {};
 		enabledFeatures.shaderClipDistance = VK_TRUE;
 		enabledFeatures.shaderCullDistance = VK_TRUE;
+		enabledFeatures.samplerAnisotropy  = VK_TRUE;
 
 		const char* deviceExtensions = VK_KHR_SWAPCHAIN_EXTENSION_NAME;
 		deviceCreateInfo.enabledExtensionCount = 1;
@@ -664,27 +666,7 @@ namespace vulkan
 		// Create one image view for every swapchain image
 
 		for (auto i = 0u; i < imageCount; i++)
-		{
-			VkImageViewCreateInfo createInfo = {};
-			createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-			createInfo.image = swapChainImages[i];
-			createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-			createInfo.format = swapChainFormat;
-			createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-			createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-			createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-			createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-			createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-			createInfo.subresourceRange.baseMipLevel = 0;
-			createInfo.subresourceRange.levelCount = 1;
-			createInfo.subresourceRange.baseArrayLayer = 0;
-			createInfo.subresourceRange.layerCount = 1;
-
-			// Finalize image
-			const auto res = vkCreateImageView(device, &createInfo, nullptr, &swapChainImageViews[i]);
-			if (res != VK_SUCCESS)
-				throw err::err("failed to create image view, at {}", i);
-		}
+			swapChainImageViews[i] = createImageView(device, swapChainImages[i], swapChainFormat);
 		
 		return swapChainImageViews;
 	}

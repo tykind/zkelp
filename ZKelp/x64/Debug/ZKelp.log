@@ -1,4 +1,4 @@
 ﻿  entry.cpp
-D:\Projects\ZKelp\ZKelp\core\rendering\engines\vulkan\builders\builders.hpp(253,39): warning C4244: 'argument': conversion from 'unsigned __int64' to 'uint32_t', possible loss of data
+D:\Projects\ZKelp\ZKelp\core\rendering\engines\vulkan\builders\builders.hpp(255,39): warning C4244: 'argument': conversion from 'unsigned __int64' to 'uint32_t', possible loss of data
 D:\Projects\ZKelp\ZKelp\core\rendering\engines\vulkan\vulkan.hpp(101,1): warning C4267: 'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
   ZKelp.vcxproj -> D:\Projects\ZKelp\x64\Debug\ZKelp.exe

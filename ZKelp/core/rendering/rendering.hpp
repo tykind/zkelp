@@ -30,6 +30,12 @@ namespace zkelp
 
 			void cleanScene()
 			{
+				const auto window = dynamic_scheduler.getRenderingWindow();
+
+				if constexpr (utils::useVulkan)
+					vulkan::vulkanEngine.cleanup(true);
+
+				glfwSetWindowShouldClose(window, true);
 				glfwDestroyWindow(dynamic_scheduler.getRenderingWindow());
 				glfwTerminate();
 			}
@@ -52,8 +58,14 @@ namespace zkelp
 						std::call_once(vulkanInit, [&] {
 							const auto window = dynamic_scheduler.getRenderingWindow();
 
+							// Setup the vulkan engine
+
 							vulkan::vulkanEngine.setup(window);
 							glfwSetWindowSizeCallback(window, vulkan::VulkanEngine::onWindowResized);
+							
+							// Do fuckups
+
+							vulkan::vulkanEngine.makeTexture("D:\\Projects\\ZKelp\\x64\\Debug\\resources\\textures\\swag.png");
 						});
 
 						// Fetch vulkan stuff
@@ -72,11 +84,8 @@ namespace zkelp
 				}
 				else
 				{
-					if constexpr (utils::useVulkan)
-						vulkan::vulkanEngine.cleanup(true);
-
 					cleanScene();
-					std::terminate();
+					return false;
 				}
 				return true;
 			}

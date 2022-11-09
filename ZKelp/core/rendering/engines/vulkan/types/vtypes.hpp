@@ -55,6 +55,14 @@ namespace types
 		} uniformData;
 	};
 
+	struct Texture
+	{
+		VkImage image;
+		VkDeviceMemory memory;
+		VkImageView view;
+		VkSampler sampler;
+	};
+
 	struct Vertex
 	{
 		float pos[3];

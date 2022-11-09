@@ -32,7 +32,8 @@ namespace zkelp
 
 			SCHEDULER_TYPEID;
 
-			virtual bool mainTick() {
+			virtual bool mainTick() 
+			{
 				std::printf("%s -> run time : %f seconds\n", task_name.data(), start_time.has_value()  ? static_cast<std::float_t>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch() - start_time.value()).count()) / 1000.0f : 0);
 				to_run();
 				return true;
@@ -63,25 +64,37 @@ namespace zkelp
 			return renderingWindow;
 		}
 
-		bool run() {
-			if (!singleton.has_value()) {
+		bool run() 
+		{
+			if (!singleton.has_value()) 
+			{
 				// Make and set a singleton-running thread
-				glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 				singleton = std::make_optional(std::jthread([&] {
-
+					glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 					renderingWindow = glfwCreateWindow(800, 600, utils::applicationName, nullptr, nullptr);
 
-					while (true) {
+					while (true) 
+					{
 						std::this_thread::sleep_for(std::chrono::milliseconds(run_timer)); // Prevent a crash
 
 						// Loop through the tasks with their piorities listed
-						for (auto& task : tasks) {
+
+						for (auto i = 0u; i < tasks.size(); i++) 
+						{
+							auto& task = tasks[i];
+
 							if (task->mainTick())
+							{
 								if (!task->start_time.has_value())
 									task->start_time = std::make_optional(std::chrono::system_clock::now().time_since_epoch()); // Give time if the time isn't provided
+							}
+							else
+							{
+								tasks.erase(tasks.begin() + i);
+							}
 						}
 					}
-					}));
+				}));
 			}
 			return true;
 		};
