@@ -1,5 +1,5 @@
 ### Zkelp
-game engine, written in C++.
+Experimenting with rendering
 
 * Rendering: It uses Vulkan, planned to support openGL in the future.
 
